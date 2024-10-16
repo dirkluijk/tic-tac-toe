@@ -2,24 +2,27 @@ import { Player } from "./player.ts";
 
 export type GameState = Pending | Draw | Won;
 
-export type Pending = { status: "pending"; end: false; currentPlayer: Player };
-export type Draw = { status: "draw"; end: true };
-export type Won = { status: "won"; end: true; winningPlayer: Player };
+export type Pending = {
+    status: "pending";
+    finished: false;
+    currentPlayer: Player;
+};
+export type Draw = { status: "draw"; finished: true };
+export type Won = { status: "won"; finished: true; winningPlayer: Player };
 
-export const DRAW: Draw = { status: "draw", end: true };
+export const draw = (): Draw => ({
+    status: "draw",
+    finished: true,
+});
 
-export function won(winningPlayer: Player): Won {
-    return {
-        status: "won",
-        end: true,
-        winningPlayer,
-    };
-}
+export const won = (winningPlayer: Player): Won => ({
+    status: "won",
+    finished: true,
+    winningPlayer,
+});
 
-export function pending(currentPlayer: Player): Pending {
-    return {
-        status: "pending",
-        end: false,
-        currentPlayer,
-    };
-}
+export const pending = (currentPlayer: Player): Pending => ({
+    status: "pending",
+    finished: false,
+    currentPlayer,
+});
