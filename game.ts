@@ -1,39 +1,21 @@
-import { Cell, Draw, GameState, Grid, Pending, Player, Won } from "./model.ts";
 import { sample } from "@std/collections/sample";
 import { delay } from "@std/async";
-
-const DRAW: Draw = { status: "draw", end: true };
-
-const won = (winningPlayer: Player): Won => ({
-    status: "won",
-    end: true,
-    winningPlayer,
-});
-
-const pending = (currentPlayer: Player): Pending => ({
-    status: "pending",
-    end: false,
-    currentPlayer,
-});
+import { withIndex } from "./utils.ts";
+import { Grid, initialGrid } from './grid.ts';
+import { DRAW, GameState, pending } from './game-state.ts';
+import { cellAvailable } from './cell.ts';
 
 export class Game {
-    public readonly grid: Grid = [
-        ["_", "_", "_"],
-        ["_", "_", "_"],
-        ["_", "_", "_"],
-    ];
-
+    public readonly grid: Grid = initialGrid();
     private state: GameState = pending("X");
 
     public get finished(): boolean {
         return this.state.end;
     }
 
-    public printStatus(): string {
+    public printGrid(): string {
         return [
-            this.state.status === "pending"
-                ? `Player ${this.state.currentPlayer.toUpperCase()}:`
-                : "",
+            !this.state.end ? `Player ${this.state.currentPlayer}:` : "",
             this.grid.map((row) => row.join(" | ")).join("\n"),
         ].join("\n");
     }
@@ -41,29 +23,22 @@ export class Game {
     public progress(): void {
         if (this.state.status !== "pending") return;
 
-        const withIndex = <T>(
-            elem: T,
-            index: number,
-        ): [T, number] => [elem, index];
-        const cellAvailable = (cell: Cell) => cell === "_";
-
-        const rowToPick = sample(
+        const rowIndexToPick = sample(
             this.grid
                 .map(withIndex)
                 .filter(([row]) => row.some(cellAvailable))
                 .map(([_, index]) => index),
         )!;
 
-        const cellToPick = sample(
-            this.grid[rowToPick]
+        const cellIndexToPick = sample(
+            this.grid[rowIndexToPick]
                 .map(withIndex)
                 .filter(([cell]) => cellAvailable(cell))
                 .map(([_, index]) => index),
         )!;
 
-        this.grid[rowToPick][cellToPick] = this.state.currentPlayer;
-
-        const anyCellsAvailable = this.grid.flat().some((cell) => cell === "_");
+        this.grid[rowIndexToPick][cellIndexToPick] = this.state.currentPlayer;
+        const anyCellsAvailable = this.grid.flat().some(cellAvailable);
 
         if (anyCellsAvailable) {
             const nextPlayer = this.state.currentPlayer === "X" ? "O" : "X";
@@ -84,17 +59,20 @@ export async function loopUntilFinished(
     } while (!game.finished);
 }
 
-// Learn more at https://docs.deno.com/runtime/manual/examples/module_metadata#concepts
+// `deno run game.ts`
 if (import.meta.main) {
     const delayBetweenSteps = 1_500;
     const game = new Game();
 
-    await loopUntilFinished(game, async () => {
+    const repaint = () => {
         console.clear();
-        console.log(game.printStatus());
+        console.log(game.printGrid());
+    }
+
+    await loopUntilFinished(game, async () => {
+        repaint();
         await delay(delayBetweenSteps);
     });
 
-    console.clear();
-    console.log(game.printStatus());
+    repaint();
 }
