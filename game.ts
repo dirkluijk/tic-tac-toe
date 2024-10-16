@@ -4,6 +4,7 @@ import { withIndex } from "./utils.ts";
 import { Grid, initialGrid } from "./grid.ts";
 import { draw, GameState, pending } from "./game-state.ts";
 import { cellAvailable } from "./cell.ts";
+import { nextPlayer } from './player.ts';
 
 export class Game {
     public readonly grid: Grid = initialGrid();
@@ -28,6 +29,8 @@ export class Game {
     public progress(): void {
         if (this.state.status !== "pending") return;
 
+        const currentPlayer = this.state.currentPlayer;
+
         const rowIndexToPick = sample(
             this.grid
                 .map(withIndex)
@@ -42,12 +45,13 @@ export class Game {
                 .map(([_, index]) => index),
         )!;
 
-        this.grid[rowIndexToPick][cellIndexToPick] = this.state.currentPlayer;
+        // mark the cell
+        this.grid[rowIndexToPick][cellIndexToPick] = currentPlayer;
+
         const anyCellsAvailable = this.grid.flat().some(cellAvailable);
 
         if (anyCellsAvailable) {
-            const nextPlayer = this.state.currentPlayer === "X" ? "O" : "X";
-            this.state = pending(nextPlayer);
+            this.state = pending(nextPlayer(currentPlayer));
         } else {
             this.state = draw();
         }
