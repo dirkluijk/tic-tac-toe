@@ -3,6 +3,8 @@
   "specifiers": {
     "jsr:@std/assert@1": "1.0.6",
     "jsr:@std/assert@^1.0.6": "1.0.6",
+    "jsr:@std/async@^1.0.6": "1.0.6",
+    "jsr:@std/collections@^1.0.8": "1.0.8",
     "jsr:@std/expect@^1.0.5": "1.0.5",
     "jsr:@std/internal@^1.0.4": "1.0.4"
   },
@@ -12,6 +14,15 @@
       "dependencies": [
         "jsr:@std/internal"
       ]
+    },
+    "@std/async@1.0.5": {
+      "integrity": "31d68214bfbb31bd4c6022401d484e3964147c76c9220098baa703a39b6c2da6"
+    },
+    "@std/async@1.0.6": {
+      "integrity": "6d262156dd35c4a72ee1a2f8679be40264f370cfb92e2e13d4eca2ae05e16f34"
+    },
+    "@std/collections@1.0.8": {
+      "integrity": "de76692f9121838711b1d2fb5042619c074db26905a87b58cff56cfe1bd6d6d0"
     },
     "@std/expect@1.0.5": {
       "integrity": "8c7ac797e2ffe57becc6399c0f2fd06230cb9ef124d45229c6e592c563824af1",
@@ -26,6 +37,8 @@
   },
   "workspace": {
     "dependencies": [
+      "jsr:@std/async@^1.0.6",
+      "jsr:@std/collections@^1.0.8",
       "jsr:@std/expect@^1.0.5"
     ]
   }

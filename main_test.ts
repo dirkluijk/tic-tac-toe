@@ -1,5 +1,6 @@
 import { expect } from "@std/expect";
 import { Game } from "./main.ts";
+import { Cell, Grid } from './model.ts';
 
 Deno.test("It should print the initial game status", () => {
     const game = new Game();
@@ -11,6 +12,30 @@ Deno.test("It should print the initial game status", () => {
         #_ | _ | _ 
     `));
 });
+
+Deno.test("It should progress to the next state", () => {
+    const game = new Game();
+
+    expect(countCells('X', game.grid)).toBe(0);
+    expect(countCells('O', game.grid)).toBe(0);
+    expect(countCells('_', game.grid)).toBe(9);
+
+    game.progress();
+
+    expect(countCells('X', game.grid)).toBe(1);
+    expect(countCells('O', game.grid)).toBe(0);
+    expect(countCells('_', game.grid)).toBe(8);
+
+    game.progress();
+
+    expect(countCells('X', game.grid)).toBe(1);
+    expect(countCells('O', game.grid)).toBe(1);
+    expect(countCells('_', game.grid)).toBe(7);
+});
+
+function countCells(cell: Cell, grid: Grid) {
+    return grid.flat().filter(it => it === cell).length;
+}
 
 function trimMargin(string: string, marginPrefix: string = "#"): string {
     return string
