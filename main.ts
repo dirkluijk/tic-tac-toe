@@ -1,6 +1,6 @@
 import { Cell, Draw, GameState, Grid, Pending, Player, Won } from "./model.ts";
 import { sample } from "@std/collections/sample";
-import { delay } from '@std/async';
+import { delay } from "@std/async";
 
 const DRAW: Draw = { status: "draw", end: true };
 
@@ -25,6 +25,10 @@ export class Game {
 
     private state: GameState = pending("X");
 
+    public get finished(): boolean {
+        return this.state.end;
+    }
+
     public printStatus(): string {
         return [
             this.state.status === "pending"
@@ -37,38 +41,59 @@ export class Game {
     public progress(): void {
         if (this.state.status !== "pending") return;
 
+        const withIndex = <T>(
+            elem: T,
+            index: number,
+        ): [T, number] => [elem, index];
         const cellAvailable = (cell: Cell) => cell === "_";
-        const toIndex = (_: unknown, index: number) => index;
 
         const rowToPick = sample(
             this.grid
-                .filter((it) => it.some(cellAvailable))
-                .map(toIndex),
+                .map(withIndex)
+                .filter(([row]) => row.some(cellAvailable))
+                .map(([_, index]) => index),
         )!;
 
         const cellToPick = sample(
             this.grid[rowToPick]
-                .filter(cellAvailable)
-                .map(toIndex),
+                .map(withIndex)
+                .filter(([cell]) => cellAvailable(cell))
+                .map(([_, index]) => index),
         )!;
 
         this.grid[rowToPick][cellToPick] = this.state.currentPlayer;
 
-        const nextPlayer: Player = this.state.currentPlayer === "X" ? "O" : "X";
-        this.state = pending(nextPlayer);
+        const anyCellsAvailable = this.grid.flat().some((cell) => cell === "_");
+
+        if (anyCellsAvailable) {
+            const nextPlayer = this.state.currentPlayer === "X" ? "O" : "X";
+            this.state = pending(nextPlayer);
+        } else {
+            this.state = DRAW;
+        }
     }
+}
+
+export async function loopUntilFinished(
+    game: Game,
+    onNext: () => Promise<void> | void,
+): Promise<void> {
+    do {
+        await onNext();
+        game.progress();
+    } while (!game.finished);
 }
 
 // Learn more at https://docs.deno.com/runtime/manual/examples/module_metadata#concepts
 if (import.meta.main) {
+    const delayBetweenSteps = 1_500;
     const game = new Game();
 
-    console.clear();
-    console.log(game.printStatus());
-
-    await delay(1_000);
-
-    game.progress();
+    await loopUntilFinished(game, async () => {
+        console.clear();
+        console.log(game.printStatus());
+        await delay(delayBetweenSteps);
+    });
 
     console.clear();
     console.log(game.printStatus());
