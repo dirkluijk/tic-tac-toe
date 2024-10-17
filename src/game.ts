@@ -10,7 +10,6 @@ import {
 import { draw, type GameState, pending, won } from "./game-state.ts";
 import { cellAvailable } from "./cell.ts";
 import { nextPlayer } from "./player.ts";
-import { printGame } from './print.ts';
 
 /**
  * A Tic-Tac-Toe game
@@ -83,6 +82,27 @@ export class Game {
             this.progress();
         } while (!this.state.finished);
     }
+
+    /**
+     * Prints the current game state.
+     */
+    public printState(): string {
+        const printStatus = () => {
+            switch (this.state.status) {
+                case "pending":
+                    return `Player ${this.state.currentPlayer}:`;
+                case "draw":
+                    return `It's a draw!`;
+                case "won":
+                    return `Player ${this.state.winningPlayer} won!`;
+            }
+        };
+
+        const printCells = () =>
+            this.grid.map((row) => row.join(" | ")).join("\n");
+
+        return [printStatus(), printCells()].join("\n");
+    }
 }
 
 // `deno run game.ts`
@@ -92,10 +112,10 @@ if (import.meta.main) {
 
     await game.untilFinished(async () => {
         console.clear();
-        console.log(printGame(game));
+        console.log(game.printState());
         await delay(delayBetweenSteps);
     });
 
     console.clear();
-    console.log(printGame(game));
+    console.log(game.printState());
 }

@@ -3,7 +3,6 @@ import { beforeEach, describe, it } from "@std/testing/bdd";
 import { fail } from "@std/assert";
 import { Game } from "./game.ts";
 import { type Cell, matchesCell } from "./cell.ts";
-import { printGame } from './print.ts';
 
 describe("Tic-tac-toe", () => {
     let game!: Game;
@@ -13,7 +12,7 @@ describe("Tic-tac-toe", () => {
     });
 
     it("should print the initial game status", () => {
-        expect(printGame(game)).toBe([
+        expect(game.printState()).toBe([
             "Player X:",
             "_ | _ | _",
             "_ | _ | _",
@@ -59,14 +58,16 @@ describe("Tic-tac-toe", () => {
             expect(countCells("X")).toBe(5);
             expect(countCells("O")).toBe(4);
             expect(countCells("_")).toBe(0);
-            expect(printGame(game)).toContain(`draw!`);
+            expect(game.printState()).toContain(`draw!`);
         } else if (game.state.status === "won") {
-            if (game.state.winningPlayer === 'X') {
+            if (game.state.winningPlayer === "X") {
                 expect(countCells("X")).toBeGreaterThan(countCells("O"));
             } else {
                 expect(countCells("O")).toBeGreaterThanOrEqual(countCells("X"));
             }
-            expect(printGame(game)).toContain(`${game.state.winningPlayer} won!`);
+            expect(game.printState()).toContain(
+                `${game.state.winningPlayer} won!`,
+            );
         }
     });
 
