@@ -1,6 +1,6 @@
 {
   "name": "@dirkluijk/tic-tac-toe",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "exports": "./src/game.ts",
   "license": "MIT",
   "tasks": {
