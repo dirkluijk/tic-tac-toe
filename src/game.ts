@@ -39,8 +39,7 @@ export class Game {
     public progress(): void {
         if (this.state.finished) return;
 
-        const currentPlayer = this.state.currentPlayer;
-
+        // pick a random cell that is available
         const rowIndexToPick = sample(
             this.grid
                 .map(withIndex)
@@ -55,9 +54,11 @@ export class Game {
                 .map(([_, index]) => index),
         )!;
 
-        // mark the cell
+        // mark the cell with the current player
+        const currentPlayer = this.state.currentPlayer;
         this.grid[rowIndexToPick][columnIndexToPick] = currentPlayer;
 
+        // determine next state
         const currentPlayerWon = playerHasThreeInRow(this.grid, currentPlayer);
         const anyCellsAvailable = cellsAvailable(this.grid);
 
