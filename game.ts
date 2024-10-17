@@ -10,6 +10,7 @@ import {
 import { draw, GameState, pending, won } from "./game-state.ts";
 import { cellAvailable } from "./cell.ts";
 import { nextPlayer } from "./player.ts";
+import { printGame } from './print.ts';
 
 export class Game {
     public readonly grid: Grid = initialGrid();
@@ -26,13 +27,6 @@ export class Game {
 
     private set state(newState: GameState) {
         this._state = newState;
-    }
-
-    public printGrid(): string {
-        return [
-            !this.state.finished ? `Player ${this.state.currentPlayer}:` : "",
-            this.grid.map((row) => row.join(" | ")).join("\n"),
-        ].join("\n");
     }
 
     public progress(): void {
@@ -61,11 +55,11 @@ export class Game {
         const playerWon = playerHasThreeInRow(this.grid, currentPlayer);
 
         if (playerWon) {
-            this._state = won(currentPlayer);
+            this.state = won(currentPlayer);
         } else if (anyCellsAvailable) {
-            this._state = pending(nextPlayer(currentPlayer));
+            this.state = pending(nextPlayer(currentPlayer));
         } else {
-            this._state = draw();
+            this.state = draw();
         }
     }
 
@@ -79,20 +73,17 @@ export class Game {
     }
 }
 
-function repaint(game: Game) {
-    console.clear();
-    console.log(game.printGrid());
-}
-
 // `deno run game.ts`
 if (import.meta.main) {
-    const delayBetweenSteps = 1_500;
+    const delayBetweenSteps = 800;
     const game = new Game();
 
     await game.untilFinished(async () => {
-        repaint(game);
+        console.clear();
+        console.log(printGame(game));
         await delay(delayBetweenSteps);
     });
 
-    repaint(game);
+    console.clear();
+    console.log(printGame(game));
 }

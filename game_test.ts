@@ -2,7 +2,8 @@ import { expect } from "@std/expect";
 import { beforeEach, describe, it } from "@std/testing/bdd";
 import { fail } from "@std/assert";
 import { Game } from "./game.ts";
-import { Cell } from "./cell.ts";
+import { Cell, matchesCell } from "./cell.ts";
+import { printGame } from './print.ts';
 
 describe("Tic-tac-toe", () => {
     let game!: Game;
@@ -12,7 +13,7 @@ describe("Tic-tac-toe", () => {
     });
 
     it("should print the initial game status", () => {
-        expect(game.printGrid()).toBe([
+        expect(printGame(game)).toBe([
             "Player X:",
             "_ | _ | _",
             "_ | _ | _",
@@ -58,16 +59,18 @@ describe("Tic-tac-toe", () => {
             expect(countCells("X")).toBe(5);
             expect(countCells("O")).toBe(4);
             expect(countCells("_")).toBe(0);
+            expect(printGame(game)).toContain(`draw!`);
         } else if (game.state.status === "won") {
             if (game.state.winningPlayer === 'X') {
                 expect(countCells("X")).toBeGreaterThan(countCells("O"));
             } else {
-                expect(countCells("O")).toBeGreaterThan(countCells("X"));
+                expect(countCells("O")).toBeGreaterThanOrEqual(countCells("X"));
             }
+            expect(printGame(game)).toContain(`${game.state.winningPlayer} won!`);
         }
     });
 
     function countCells(cell: Cell) {
-        return game.grid.flat().filter((it) => it === cell).length;
+        return game.grid.flat().filter(matchesCell(cell)).length;
     }
 });
