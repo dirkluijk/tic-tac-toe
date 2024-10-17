@@ -5,7 +5,11 @@
 [![JSR version](http://img.shields.io/jsr/v/@dirkluijk/tic-tac-toe.svg)](https://jsr.io/@dirkluijk/tic-tac-toe)
 [![Build status](https://github.com/dirkluijk/tic-tac-toe/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/dirkluijk/tic-tac-toe/actions/workflows/ci.yml)
 
-## Running the game
+## Online demo
+
+Check out the [demo on StackBlitz](https://stackblitz.com/edit/dirkluijk-tic-tac-toe?file=index.html).
+
+## Running the game locally
 
 * Install [Deno](https://docs.deno.com/runtime/#install-deno)
 * Run `deno run jsr:@dirkluijk/tic-tac-toe` 
