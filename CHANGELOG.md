@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.3](https://github.com/dirkluijk/tic-tac-toe/compare/v0.0.2...v0.0.3) (2024-10-17)
+
+
+### Documentation
+
+* add JSDocs ([34124f6](https://github.com/dirkluijk/tic-tac-toe/commit/34124f62200f4636af1c77c66a528e711b36d893))
+
 ## [0.0.2](https://github.com/dirkluijk/tic-tac-toe/compare/v0.0.1...v0.0.2) (2024-10-17)
 
 
