@@ -33,6 +33,6 @@ export const playerHasThreeInRow = (grid: Grid, player: Player) => {
         allMatchPlayer(grid[0][2], grid[1][2], grid[2][2]) ||
         // diagonal
         allMatchPlayer(grid[0][0], grid[1][1], grid[2][2]) ||
-        allMatchPlayer(grid[0][2], grid[1][1], grid[1][0])
+        allMatchPlayer(grid[0][2], grid[1][1], grid[2][0])
     );
 };
