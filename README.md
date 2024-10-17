@@ -7,7 +7,7 @@
 
 ## Running the game
 
-* Install [Deno](https://deno.com/)
+* Install [Deno](https://docs.deno.com/runtime/#install-deno)
 * Run `deno run jsr:@dirkluijk/tic-tac-toe` 
 
 ## License
