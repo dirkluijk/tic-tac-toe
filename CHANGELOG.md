@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.4](https://github.com/dirkluijk/tic-tac-toe/compare/v0.0.3...v0.0.4) (2024-10-17)
+
+
+### Bug Fixes
+
+* expose print method ([d40b4ff](https://github.com/dirkluijk/tic-tac-toe/commit/d40b4ffe65fbbda7b173463852345c647f5fcf9e))
+
 ## [0.0.3](https://github.com/dirkluijk/tic-tac-toe/compare/v0.0.2...v0.0.3) (2024-10-17)
 
 
