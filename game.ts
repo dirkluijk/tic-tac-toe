@@ -12,7 +12,13 @@ import { cellAvailable } from "./cell.ts";
 import { nextPlayer } from "./player.ts";
 import { printGame } from './print.ts';
 
+/**
+ * A Tic-Tac-Toe game
+ */
 export class Game {
+    /**
+     * Represents the grid of the game.
+     */
     public readonly grid: Grid = initialGrid();
 
     private _state: GameState = {
@@ -21,10 +27,16 @@ export class Game {
         currentPlayer: "X",
     };
 
+    /**
+     * The current state of the game, either pending, a draw or a win.
+     */
     public get state(): GameState {
         return this._state;
     }
 
+    /**
+     * Advances the game by letting the next player make a turn.
+     */
     public progress(): void {
         if (this.state.status !== "pending") return;
 
@@ -59,6 +71,10 @@ export class Game {
         }
     }
 
+    /**
+     * Loops until the game has been finished.
+     * @param onNext An optional callback to run on every step.
+     */
     public async untilFinished(
         onNext?: () => Promise<unknown> | unknown,
     ): Promise<void> {
