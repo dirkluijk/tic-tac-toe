@@ -2,13 +2,13 @@ import { sample } from "@std/collections/sample";
 import { delay } from "@std/async";
 import { withIndex } from "./utils.ts";
 import {
+    cellAvailable,
     cellsAvailable,
     type Grid,
     initialGrid,
     playerHasThreeInRow,
 } from "./grid.ts";
-import { draw, type GameState, pending, won } from "./game-state.ts";
-import { cellAvailable } from "./cell.ts";
+import { draw, type GameState, pending, win } from "./game-state.ts";
 import { nextPlayer } from "./player.ts";
 
 /**
@@ -37,7 +37,7 @@ export class Game {
      * Advances the game by letting the next player make a turn.
      */
     public progress(): void {
-        if (this.state.status !== "pending") return;
+        if (this.state.finished) return;
 
         const currentPlayer = this.state.currentPlayer;
 
@@ -48,7 +48,7 @@ export class Game {
                 .map(([_, index]) => index),
         )!;
 
-        const cellIndexToPick = sample(
+        const columnIndexToPick = sample(
             this.grid[rowIndexToPick]
                 .map(withIndex)
                 .filter(([cell]) => cellAvailable(cell))
@@ -56,13 +56,13 @@ export class Game {
         )!;
 
         // mark the cell
-        this.grid[rowIndexToPick][cellIndexToPick] = currentPlayer;
+        this.grid[rowIndexToPick][columnIndexToPick] = currentPlayer;
 
+        const currentPlayerWon = playerHasThreeInRow(this.grid, currentPlayer);
         const anyCellsAvailable = cellsAvailable(this.grid);
-        const playerWon = playerHasThreeInRow(this.grid, currentPlayer);
 
-        if (playerWon) {
-            this._state = won(currentPlayer);
+        if (currentPlayerWon) {
+            this._state = win(currentPlayer);
         } else if (anyCellsAvailable) {
             this._state = pending(nextPlayer(currentPlayer));
         } else {
@@ -93,7 +93,7 @@ export class Game {
                     return `Player ${this.state.currentPlayer}:`;
                 case "draw":
                     return `It's a draw!`;
-                case "won":
+                case "win":
                     return `Player ${this.state.winningPlayer} won!`;
             }
         };

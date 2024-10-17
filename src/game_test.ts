@@ -2,7 +2,7 @@ import { expect } from "@std/expect";
 import { beforeEach, describe, it } from "@std/testing/bdd";
 import { fail } from "@std/assert";
 import { Game } from "./game.ts";
-import { type Cell, matchesCell } from "./cell.ts";
+import type { Cell } from './grid.ts';
 
 describe("Tic-tac-toe", () => {
     let game!: Game;
@@ -59,7 +59,7 @@ describe("Tic-tac-toe", () => {
             expect(countCells("O")).toBe(4);
             expect(countCells("_")).toBe(0);
             expect(game.printState()).toContain(`draw!`);
-        } else if (game.state.status === "won") {
+        } else if (game.state.status === "win") {
             if (game.state.winningPlayer === "X") {
                 expect(countCells("X")).toBeGreaterThan(countCells("O"));
             } else {
@@ -72,6 +72,6 @@ describe("Tic-tac-toe", () => {
     });
 
     function countCells(cell: Cell) {
-        return game.grid.flat().filter(matchesCell(cell)).length;
+        return game.grid.flat().filter(it => it === cell).length;
     }
 });

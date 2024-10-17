@@ -1,6 +1,6 @@
 import type { Player } from "./player.ts";
 
-export type GameState = Readonly<Pending | Draw | Won>;
+export type GameState = Pending | Draw | Win;
 
 export type Pending = {
     status: "pending";
@@ -13,8 +13,8 @@ export type Draw = {
     finished: true;
 };
 
-export type Won = {
-    status: "won";
+export type Win = {
+    status: "win";
     finished: true;
     winningPlayer: Player;
 };
@@ -25,8 +25,8 @@ export const draw = (): Draw => ({
     finished: true,
 });
 
-export const won = (winningPlayer: Player): Won => ({
-    status: "won",
+export const win = (winningPlayer: Player): Win => ({
+    status: "win",
     finished: true,
     winningPlayer,
 });

@@ -1,5 +1,6 @@
-import { type Cell, cellAvailable } from "./cell.ts";
 import type { Player } from "./player.ts";
+
+export type Cell = "_" | Player;
 
 export type Grid = [
     [Cell, Cell, Cell],
@@ -13,6 +14,7 @@ export const initialGrid = (): Grid => [
     ["_", "_", "_"],
 ];
 
+export const cellAvailable = (cell: Cell) => cell === "_";
 export const cellsAvailable = (grid: Grid) => grid.flat().some(cellAvailable);
 
 export const playerHasThreeInRow = (grid: Grid, player: Player) => {
