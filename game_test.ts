@@ -1,7 +1,6 @@
 import { expect } from "@std/expect";
 import { beforeEach, describe, it } from "@std/testing/bdd";
 import { Game, loopUntilFinished } from "./game.ts";
-import { trimMargin } from './utils.ts';
 import { Cell } from './cell.ts';
 
 describe("Tic-tac-toe", () => {
@@ -12,12 +11,12 @@ describe("Tic-tac-toe", () => {
     });
 
     it("should print the initial game status", () => {
-        expect(game.printGrid()).toBe(trimMargin(`
-            #Player X:
-            #_ | _ | _ 
-            #_ | _ | _ 
-            #_ | _ | _ 
-        `));
+        expect(game.printGrid()).toBe([
+            'Player X:',
+            '_ | _ | _' ,
+            '_ | _ | _' ,
+            '_ | _ | _',
+        ].join('\n'));
     });
 
     it("should progress to the next state", () => {
