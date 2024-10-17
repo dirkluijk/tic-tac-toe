@@ -5,11 +5,10 @@
 [![JSR version](http://img.shields.io/jsr/v/@dirkluijk/tic-tac-toe.svg)](https://jsr.io/@dirkluijk/tic-tac-toe)
 [![Build status](https://github.com/dirkluijk/tic-tac-toe/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/dirkluijk/tic-tac-toe/actions/workflows/ci.yml)
 
-## Running locally
+## Running the game
 
-* Clone this repository
 * Install [Deno](https://deno.com/)
-* In the root of the project, run `deno game.ts` 
+* Run `deno run jsr:@dirkluijk/tic-tac-toe` 
 
 ## License
 
