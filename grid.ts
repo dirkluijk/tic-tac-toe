@@ -1,4 +1,4 @@
-import { Cell, cellAvailable } from "./cell.ts";
+import { type Cell, cellAvailable } from "./cell.ts";
 import type { Player } from "./player.ts";
 
 export type Grid = [

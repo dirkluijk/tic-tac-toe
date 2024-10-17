@@ -2,7 +2,7 @@ import { expect } from "@std/expect";
 import { beforeEach, describe, it } from "@std/testing/bdd";
 import { fail } from "@std/assert";
 import { Game } from "./game.ts";
-import { Cell, matchesCell } from "./cell.ts";
+import { type Cell, matchesCell } from "./cell.ts";
 import { printGame } from './print.ts';
 
 describe("Tic-tac-toe", () => {

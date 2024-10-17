@@ -1,4 +1,4 @@
-import { Player } from "./player.ts";
+import type { Player } from "./player.ts";
 
 export type GameState = Readonly<Pending | Draw | Won>;
 

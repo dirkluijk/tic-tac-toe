@@ -3,11 +3,11 @@ import { delay } from "@std/async";
 import { withIndex } from "./utils.ts";
 import {
     cellsAvailable,
-    Grid,
+    type Grid,
     initialGrid,
     playerHasThreeInRow,
 } from "./grid.ts";
-import { draw, GameState, pending, won } from "./game-state.ts";
+import { draw, type GameState, pending, won } from "./game-state.ts";
 import { cellAvailable } from "./cell.ts";
 import { nextPlayer } from "./player.ts";
 import { printGame } from './print.ts';
@@ -23,10 +23,6 @@ export class Game {
 
     public get state(): GameState {
         return this._state;
-    }
-
-    private set state(newState: GameState) {
-        this._state = newState;
     }
 
     public progress(): void {
@@ -55,11 +51,11 @@ export class Game {
         const playerWon = playerHasThreeInRow(this.grid, currentPlayer);
 
         if (playerWon) {
-            this.state = won(currentPlayer);
+            this._state = won(currentPlayer);
         } else if (anyCellsAvailable) {
-            this.state = pending(nextPlayer(currentPlayer));
+            this._state = pending(nextPlayer(currentPlayer));
         } else {
-            this.state = draw();
+            this._state = draw();
         }
     }
 

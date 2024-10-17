@@ -1,4 +1,8 @@
 {
+  "name": "@dirkluijk/tic-tac-toe",
+  "version": "0.0.1",
+  "exports": "./game.ts",
+  "license": "MIT",
   "tasks": {
     "dev": "deno run --watch game.ts"
   },

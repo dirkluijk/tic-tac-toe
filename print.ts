@@ -1,4 +1,4 @@
-import { Game } from './game.ts';
+import type { Game } from './game.ts';
 
 export function printGame(game: Game): string {
     const printStatus = () => {
