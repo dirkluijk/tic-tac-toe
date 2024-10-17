@@ -6,10 +6,10 @@ import {
     cellsAvailable,
     type Grid,
     initialGrid,
+    nextPlayer,
     playerHasThreeInRow,
 } from "./grid.ts";
 import { draw, type GameState, pending, win } from "./game-state.ts";
-import { nextPlayer } from "./player.ts";
 
 /**
  * A Tic-Tac-Toe game
@@ -29,7 +29,7 @@ export class Game {
     /**
      * The current state of the game, either pending, a draw or a win.
      */
-    public get state(): GameState {
+    public get state(): Readonly<GameState> {
         return this._state;
     }
 
@@ -63,10 +63,10 @@ export class Game {
 
         if (currentPlayerWon) {
             this._state = win(currentPlayer);
-        } else if (anyCellsAvailable) {
-            this._state = pending(nextPlayer(currentPlayer));
-        } else {
+        } else if (!anyCellsAvailable) {
             this._state = draw();
+        } else {
+            this._state = pending(nextPlayer(currentPlayer));
         }
     }
 

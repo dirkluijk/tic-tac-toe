@@ -1,4 +1,4 @@
-import type { Player } from "./player.ts";
+import type { Player } from './grid.ts';
 
 export type GameState = Pending | Draw | Win;
 

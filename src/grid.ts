@@ -1,5 +1,4 @@
-import type { Player } from "./player.ts";
-
+export type Player = "X" | "O";
 export type Cell = "_" | Player;
 
 export type Grid = [
@@ -16,6 +15,8 @@ export const initialGrid = (): Grid => [
 
 export const cellAvailable = (cell: Cell) => cell === "_";
 export const cellsAvailable = (grid: Grid) => grid.flat().some(cellAvailable);
+
+export const nextPlayer = (currentPlayer: Player): Player => currentPlayer === "X" ? "O" : "X";
 
 export const playerHasThreeInRow = (grid: Grid, player: Player) => {
     const allMatchPlayer = (...cells: Cell[]) =>
