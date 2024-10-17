@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.5](https://github.com/dirkluijk/tic-tac-toe/compare/v0.0.4...v0.0.5) (2024-10-17)
+
+
+### Bug Fixes
+
+* fix incorrect diagonal three in a row ([b9475f5](https://github.com/dirkluijk/tic-tac-toe/commit/b9475f54f0db638868e07e81bc250df3e8497c91))
+
 ## [0.0.4](https://github.com/dirkluijk/tic-tac-toe/compare/v0.0.3...v0.0.4) (2024-10-17)
 
 
