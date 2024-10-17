@@ -1,6 +1,6 @@
 import { Player } from "./player.ts";
 
-export type GameState = Pending | Draw | Won;
+export type GameState = Readonly<Pending | Draw | Won>;
 
 export type Pending = {
     status: "pending";

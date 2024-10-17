@@ -1,22 +1,31 @@
 import { sample } from "@std/collections/sample";
 import { delay } from "@std/async";
 import { withIndex } from "./utils.ts";
-import { Grid, initialGrid } from "./grid.ts";
-import { draw, GameState, pending } from "./game-state.ts";
+import {
+    cellsAvailable,
+    Grid,
+    initialGrid,
+    playerHasThreeInRow,
+} from "./grid.ts";
+import { draw, GameState, pending, won } from "./game-state.ts";
 import { cellAvailable } from "./cell.ts";
-import { nextPlayer } from './player.ts';
+import { nextPlayer } from "./player.ts";
 
 export class Game {
     public readonly grid: Grid = initialGrid();
 
-    private state: GameState = {
+    private _state: GameState = {
         status: "pending",
         finished: false,
         currentPlayer: "X",
     };
 
-    public get finished(): boolean {
-        return this.state.finished;
+    public get state(): GameState {
+        return this._state;
+    }
+
+    private set state(newState: GameState) {
+        this._state = newState;
     }
 
     public printGrid(): string {
@@ -48,29 +57,31 @@ export class Game {
         // mark the cell
         this.grid[rowIndexToPick][cellIndexToPick] = currentPlayer;
 
-        const anyCellsAvailable = this.grid.flat().some(cellAvailable);
+        const anyCellsAvailable = cellsAvailable(this.grid);
+        const playerWon = playerHasThreeInRow(this.grid, currentPlayer);
 
-        if (anyCellsAvailable) {
-            this.state = pending(nextPlayer(currentPlayer));
+        if (playerWon) {
+            this._state = won(currentPlayer);
+        } else if (anyCellsAvailable) {
+            this._state = pending(nextPlayer(currentPlayer));
         } else {
-            this.state = draw();
+            this._state = draw();
         }
+    }
+
+    public async untilFinished(
+        onNext?: () => Promise<unknown> | unknown,
+    ): Promise<void> {
+        do {
+            if (onNext) await onNext();
+            this.progress();
+        } while (!this.state.finished);
     }
 }
 
-export async function loopUntilFinished(
-    game: Game,
-    onNext: () => Promise<void> | void,
-): Promise<void> {
-    do {
-        await onNext();
-        game.progress();
-    } while (!game.finished);
-}
-
 function repaint(game: Game) {
-  console.clear();
-  console.log(game.printGrid());
+    console.clear();
+    console.log(game.printGrid());
 }
 
 // `deno run game.ts`
@@ -78,7 +89,7 @@ if (import.meta.main) {
     const delayBetweenSteps = 1_500;
     const game = new Game();
 
-    await loopUntilFinished(game, async () => {
+    await game.untilFinished(async () => {
         repaint(game);
         await delay(delayBetweenSteps);
     });

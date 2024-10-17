@@ -1,7 +1,8 @@
 import { expect } from "@std/expect";
 import { beforeEach, describe, it } from "@std/testing/bdd";
-import { Game, loopUntilFinished } from "./game.ts";
-import { Cell } from './cell.ts';
+import { fail } from "@std/assert";
+import { Game } from "./game.ts";
+import { Cell } from "./cell.ts";
 
 describe("Tic-tac-toe", () => {
     let game!: Game;
@@ -12,11 +13,11 @@ describe("Tic-tac-toe", () => {
 
     it("should print the initial game status", () => {
         expect(game.printGrid()).toBe([
-            'Player X:',
-            '_ | _ | _' ,
-            '_ | _ | _' ,
-            '_ | _ | _',
-        ].join('\n'));
+            "Player X:",
+            "_ | _ | _",
+            "_ | _ | _",
+            "_ | _ | _",
+        ].join("\n"));
     });
 
     it("should progress to the next state", () => {
@@ -38,19 +39,32 @@ describe("Tic-tac-toe", () => {
     });
 
     it("should loop until game has ended", async () => {
-        expect(game.finished).toBe(false);
+        expect(game.state.finished).toBe(false);
 
         let steps = 0;
-        await loopUntilFinished(game, () => {
-            steps++;
-        });
+        await game.untilFinished(() => steps++);
 
-        expect(game.finished).toBe(true);
-        expect(steps).toBe(9);
+        expect(game.state.finished).toBe(true);
+        expect(steps).toBeGreaterThan(0);
+        expect(steps).toBeLessThanOrEqual(9);
+    });
 
-        expect(countCells("X")).toBe(5);
-        expect(countCells("O")).toBe(4);
-        expect(countCells("_")).toBe(0);
+    it("should end in draw or winning state", async () => {
+        await game.untilFinished();
+
+        if (game.state.status === "pending") {
+            fail("Should not be pending");
+        } else if (game.state.status === "draw") {
+            expect(countCells("X")).toBe(5);
+            expect(countCells("O")).toBe(4);
+            expect(countCells("_")).toBe(0);
+        } else if (game.state.status === "won") {
+            if (game.state.winningPlayer === 'X') {
+                expect(countCells("X")).toBeGreaterThan(countCells("O"));
+            } else {
+                expect(countCells("O")).toBeGreaterThan(countCells("X"));
+            }
+        }
     });
 
     function countCells(cell: Cell) {
