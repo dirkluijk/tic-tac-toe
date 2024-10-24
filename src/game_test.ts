@@ -1,6 +1,7 @@
 import { expect } from "@std/expect";
 import { beforeEach, describe, it } from "@std/testing/bdd";
 import { fail } from "@std/assert";
+import { delay } from '@std/async';
 import { Game } from "./game.ts";
 import type { Cell } from './grid.ts';
 
@@ -68,6 +69,17 @@ describe("Tic-tac-toe", () => {
             expect(game.printState()).toContain(
                 `${game.state.winningPlayer} won!`,
             );
+        }
+    });
+
+    it("should end in draw or winning state", async () => {
+        for await (const state of game) {
+            expect(state.status).toBe('pending')
+            await delay(100);
+        }
+
+        if (game.state.status === "pending") {
+            fail("Should not be pending");
         }
     });
 
