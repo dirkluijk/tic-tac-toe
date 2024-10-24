@@ -88,6 +88,7 @@ export class Game {
      * Iterates until the game has been finished.
      */
     async *[Symbol.asyncIterator](): AsyncGenerator<GameState> {
+        this.progress();
         do {
             yield this.state;
             this.progress();
