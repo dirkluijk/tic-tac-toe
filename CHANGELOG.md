@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/dirkluijk/tic-tac-toe/compare/v0.1.0...v0.1.1) (2024-10-24)
+
+
+### Bug Fixes
+
+* always first progress before yielding ([9e079b5](https://github.com/dirkluijk/tic-tac-toe/commit/9e079b5c1b4afa917b09b59ba3d0f917a3ce1ef2))
+
 ## [0.1.0](https://github.com/dirkluijk/tic-tac-toe/compare/v0.0.5...v0.1.0) (2024-10-24)
 
 
