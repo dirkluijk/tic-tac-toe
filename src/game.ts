@@ -85,6 +85,16 @@ export class Game {
     }
 
     /**
+     * Iterates until the game has been finished.
+     */
+    async *[Symbol.asyncIterator](): AsyncGenerator<GameState> {
+        do {
+            yield this.state;
+            this.progress();
+        } while (!this.state.finished);
+    }
+
+    /**
      * Prints the current game state.
      */
     public printState(): string {
