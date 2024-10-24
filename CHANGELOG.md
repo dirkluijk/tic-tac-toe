@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.0](https://github.com/dirkluijk/tic-tac-toe/compare/v0.0.5...v0.1.0) (2024-10-24)
+
+
+### Features
+
+* add async iterator ([#6](https://github.com/dirkluijk/tic-tac-toe/issues/6)) ([226cb7d](https://github.com/dirkluijk/tic-tac-toe/commit/226cb7db9a6d1fa4b1b22e87ca0dbe843ba1abba))
+
 ## [0.0.5](https://github.com/dirkluijk/tic-tac-toe/compare/v0.0.4...v0.0.5) (2024-10-17)
 
 
